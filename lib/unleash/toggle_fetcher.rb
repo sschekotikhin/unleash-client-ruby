@@ -67,14 +67,13 @@ module Unleash
       Unleash.logger.debug "Will save toggles to disk now"
       begin
         backup_file = Unleash.configuration.backup_file
+        backup_file_tmp = "#{backup_file}.tmp"
 
         self.toggle_lock.synchronize do
-          file = Tempfile.new
-          path = file.path
-
+          file = File.open(backup_file_tmp, "w")
           file.write(self.toggle_cache.to_json)
           file.close
-          File.rename(path, backup_file)
+          File.rename(backup_file_tmp, backup_file)
         end
       rescue StandardError => e
         # This is not really the end of the world. Swallowing the exception.
