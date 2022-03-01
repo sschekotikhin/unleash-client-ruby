@@ -67,7 +67,7 @@ module Unleash
       Unleash.logger.debug "Will save toggles to disk now"
       begin
         backup_file = Unleash.configuration.backup_file
-        backup_file_tmp = "#{Process.pid}-#{backup_file}.tmp"
+        backup_file_tmp = "#{backup_file}.#{Process.pid}.tmp"
 
         self.toggle_lock.synchronize do
           file = File.open(backup_file_tmp, "w")
